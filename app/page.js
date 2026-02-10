@@ -710,75 +710,90 @@ export default function DataCenterFeed() {
 
   return (
     <div className="min-h-screen bg-neutral-900 text-white">
-      <header className="border-b border-neutral-800 bg-neutral-900">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <header className="border-b border-neutral-800 bg-neutral-900 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z"/>
               </svg>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold">Data Center Feed</h1>
-              <p className="text-sm text-neutral-400">{articles.length} articles from your sources</p>
+            <div className="min-w-0">
+              <h1 className="text-lg md:text-2xl font-bold truncate">Data Center Feed</h1>
+              <p className="text-xs md:text-sm text-neutral-400 hidden sm:block">{articles.length} articles from your sources</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            {/* User info */}
-            <div className="flex items-center gap-3 text-sm border-r border-neutral-700 pr-4">
-              <span className="text-neutral-400">{user?.email}</span>
+          <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
+            {/* User info - show email only on desktop */}
+            <div className="hidden md:flex items-center gap-3 text-sm border-r border-neutral-700 pr-4">
+              <span className="text-neutral-400 truncate max-w-[150px] lg:max-w-none">{user?.email}</span>
               <button
                 onClick={handleSignOut}
-                className="px-4 py-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-lg transition-colors"
+                className="px-4 py-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-lg transition-colors whitespace-nowrap"
               >
                 Sign Out
               </button>
             </div>
             
-            {/* Refresh and Add Source buttons */}
+            {/* Mobile sign out icon */}
+            <button
+              onClick={handleSignOut}
+              className="md:hidden p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-lg transition-colors"
+              title="Sign Out"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
+            
+            {/* Refresh button */}
             <button
               onClick={refreshFeeds}
               disabled={loading}
-              className="px-4 py-2 text-neutral-300 hover:text-white flex items-center gap-2 disabled:opacity-50"
+              className="p-2 md:px-4 md:py-2 text-neutral-300 hover:text-white flex items-center gap-2 disabled:opacity-50 rounded-lg hover:bg-neutral-800"
+              title="Refresh"
             >
               <svg className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              Refresh
+              <span className="hidden md:inline">Refresh</span>
             </button>
+            
+            {/* Add Source button */}
             <button
               onClick={() => setShowAddSource(true)}
-              className="px-5 py-2 bg-amber-600 hover:bg-amber-700 rounded-lg font-medium flex items-center gap-2"
+              className="p-2 md:px-5 md:py-2 bg-amber-600 hover:bg-amber-700 rounded-lg font-medium flex items-center gap-2"
+              title="Add Source"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              Add Source
+              <span className="hidden md:inline">Add Source</span>
             </button>
           </div>
         </div>
       </header>
 
-      <div className="border-b border-neutral-800 bg-neutral-900">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-6">
+      <div className="border-b border-neutral-800 bg-neutral-900 sticky top-[57px] md:top-[73px] z-20">
+        <div className="max-w-7xl mx-auto px-2 md:px-6 py-2 md:py-3 flex items-center gap-2 md:gap-6 overflow-x-auto">
           <button
             onClick={() => { setActiveView('feed'); setSelectedSource('all'); }}
-            className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
+            className={`px-3 md:px-4 py-2 md:py-2 rounded-lg flex items-center gap-2 whitespace-nowrap text-sm md:text-base ${
               activeView === 'feed' ? 'bg-neutral-800 text-white' : 'text-neutral-400 hover:text-white'
             }`}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             My Feed
           </button>
           <button
             onClick={() => setActiveView('bookmarks')}
-            className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
+            className={`px-3 md:px-4 py-2 md:py-2 rounded-lg flex items-center gap-2 whitespace-nowrap text-sm md:text-base ${
               activeView === 'bookmarks' ? 'bg-neutral-800 text-white' : 'text-neutral-400 hover:text-white'
             }`}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
             Bookmarks
@@ -787,10 +802,10 @@ export default function DataCenterFeed() {
           <div className="relative">
             <button
               onClick={() => setShowSourcesDropdown(!showSourcesDropdown)}
-              className="px-4 py-2 rounded-lg flex items-center gap-2 text-neutral-400 hover:text-white"
+              className="px-3 md:px-4 py-2 md:py-2 rounded-lg flex items-center gap-2 text-neutral-400 hover:text-white whitespace-nowrap text-sm md:text-base"
             >
               Sources
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
@@ -924,16 +939,16 @@ export default function DataCenterFeed() {
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-8">
         {sortedArticles.length === 0 ? (
-          <div className="text-center py-20">
-            <svg className="w-20 h-20 text-neutral-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="text-center py-12 md:py-20">
+            <svg className="w-16 h-16 md:w-20 md:h-20 text-neutral-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z" />
             </svg>
-            <h3 className="text-2xl font-semibold text-neutral-400 mb-2">
+            <h3 className="text-xl md:text-2xl font-semibold text-neutral-400 mb-2">
               {activeView === 'bookmarks' ? 'No bookmarks yet' : selectedSource !== 'all' ? 'No articles from this source' : 'No articles yet'}
             </h3>
-            <p className="text-neutral-500 mb-6">
+            <p className="text-sm md:text-base text-neutral-500 mb-6">
               {activeView === 'bookmarks' 
                 ? 'Bookmark articles to save them for later'
                 : selectedSource !== 'all'
@@ -950,20 +965,20 @@ export default function DataCenterFeed() {
             )}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {sortedArticles.map((article) => (
               <article
                 key={article.id}
                 className="bg-neutral-800 rounded-lg border border-neutral-700 hover:border-neutral-600 transition-all"
               >
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <span className={`px-3 py-1 bg-${getCategoryColor(article.sourceCategory)}-600 text-${getCategoryColor(article.sourceCategory)}-100 rounded text-xs font-medium`}>
+                <div className="p-4 md:p-6">
+                  <div className="flex items-start justify-between mb-3 gap-2">
+                    <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                      <span className={`px-2 md:px-3 py-1 bg-${getCategoryColor(article.sourceCategory)}-600 text-${getCategoryColor(article.sourceCategory)}-100 rounded text-xs font-medium whitespace-nowrap`}>
                         {article.sourceCategory || 'News'}
                       </span>
-                      <span className="text-sm text-neutral-400 flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span className="text-xs md:text-sm text-neutral-400 flex items-center gap-1">
+                        <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         {formatDate(article.pubDate)}
@@ -971,22 +986,22 @@ export default function DataCenterFeed() {
                     </div>
                     <button
                       onClick={() => toggleBookmark(article.id)}
-                      className="text-neutral-400 hover:text-amber-500"
+                      className="text-neutral-400 hover:text-amber-500 flex-shrink-0 p-1 md:p-0"
                     >
-                      <svg className={`w-6 h-6 ${bookmarks.includes(article.id) ? 'fill-amber-500 text-amber-500' : 'fill-none'}`} stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className={`w-6 h-6 md:w-6 md:h-6 ${bookmarks.includes(article.id) ? 'fill-amber-500 text-amber-500' : 'fill-none'}`} stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                       </svg>
                     </button>
                   </div>
                   
-                  <h3 className="text-xl font-semibold text-white mb-2">{article.title}</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-white mb-2 leading-tight">{article.title}</h3>
                   
                   {article.sourceName && (
-                    <p className="text-sm text-neutral-500 mb-3">{article.sourceName}</p>
+                    <p className="text-xs md:text-sm text-neutral-500 mb-3">{article.sourceName}</p>
                   )}
                   
                   {article.description && article.description.trim() && (
-                    <p className="text-neutral-400 mb-4 text-sm overflow-hidden" style={{
+                    <p className="text-neutral-400 mb-4 text-xs md:text-sm overflow-hidden leading-relaxed" style={{
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
                       WebkitBoxOrient: 'vertical'
@@ -1014,18 +1029,18 @@ export default function DataCenterFeed() {
       </main>
 
       {showAddSource && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
-          <div className="bg-neutral-800 rounded-lg max-w-lg w-full p-6 border border-neutral-700">
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-end md:items-center justify-center p-0 md:p-4 z-50">
+          <div className="bg-neutral-800 rounded-t-2xl md:rounded-lg max-w-lg w-full p-6 border-t md:border border-neutral-700 max-h-[90vh] md:max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold">Add News Source</h3>
-              <button onClick={() => { setShowAddSource(false); setError(''); }} className="text-neutral-400 hover:text-white">
+              <h3 className="text-xl md:text-2xl font-bold">Add News Source</h3>
+              <button onClick={() => { setShowAddSource(false); setError(''); }} className="text-neutral-400 hover:text-white p-2 md:p-0">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             
-            <p className="text-neutral-400 mb-6">Enter the URL of an RSS feed to track.</p>
+            <p className="text-sm md:text-base text-neutral-400 mb-6">Enter the URL of an RSS feed to track.</p>
             
             {error && (
               <div className="mb-4 p-3 bg-red-900 border border-red-700 rounded-lg text-red-200 text-sm">
@@ -1151,17 +1166,17 @@ export default function DataCenterFeed() {
       {showManageSources && (
         <>
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setShowManageSources(false)} />
-          <div className="fixed right-0 top-0 bottom-0 w-96 bg-neutral-800 border-l border-neutral-700 z-50 p-6 overflow-y-auto">
+          <div className="fixed right-0 top-0 bottom-0 w-full md:w-96 bg-neutral-800 border-l border-neutral-700 z-50 p-4 md:p-6 overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold">Manage Sources</h3>
-              <button onClick={() => setShowManageSources(false)} className="text-neutral-400 hover:text-white">
+              <h3 className="text-xl md:text-2xl font-bold">Manage Sources</h3>
+              <button onClick={() => setShowManageSources(false)} className="text-neutral-400 hover:text-white p-2 md:p-0">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             
-            <p className="text-neutral-400 mb-6">{sources.length} sources configured</p>
+            <p className="text-sm md:text-base text-neutral-400 mb-6">{sources.length} sources configured</p>
             
             {sources.length === 0 ? (
               <div className="text-center py-12">
@@ -1391,17 +1406,17 @@ export default function DataCenterFeed() {
       {showManageCategories && (
         <>
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setShowManageCategories(false)} />
-          <div className="fixed right-0 top-0 bottom-0 w-96 bg-neutral-800 border-l border-neutral-700 z-50 p-6 overflow-y-auto">
+          <div className="fixed right-0 top-0 bottom-0 w-full md:w-96 bg-neutral-800 border-l border-neutral-700 z-50 p-4 md:p-6 overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold">Manage Categories</h3>
-              <button onClick={() => setShowManageCategories(false)} className="text-neutral-400 hover:text-white">
+              <h3 className="text-xl md:text-2xl font-bold">Manage Categories</h3>
+              <button onClick={() => setShowManageCategories(false)} className="text-neutral-400 hover:text-white p-2 md:p-0">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             
-            <p className="text-neutral-400 mb-6">{categories.length} categories configured</p>
+            <p className="text-sm md:text-base text-neutral-400 mb-6">{categories.length} categories configured</p>
             
             {categories.length === 0 ? (
               <div className="text-center py-12">
