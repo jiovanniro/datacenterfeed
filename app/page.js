@@ -399,7 +399,7 @@ export default function DataCenterFeed() {
     const bookmarkedArticles = articles.filter(a => bookmarks.includes(a.id));
     
     // Combine fresh articles with existing bookmarked articles
-    const combinedArticles = [...allArticles, ...bookmarkedArticles];
+    const combinedArticles = [...bookmarkedArticles, ...allArticles];
     const deduplicatedArticles = deduplicateArticles(combinedArticles);
     
     setArticles(deduplicatedArticles);
